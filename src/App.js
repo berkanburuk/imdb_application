@@ -15,6 +15,7 @@ class App extends Component {
         },
         sharedMovie: {
             input: "",
+            input2:"",
             display: "none",
             result: "",
             data: []
@@ -26,40 +27,71 @@ class App extends Component {
             data: []
         }
     }
+
+
+
     typecastingClickHandler = () => {
-        //send request
-        /*
-        axios.post('https://jsonplaceholder.typicode.com/posts', {
-            firstName: 'as',
-            lastName: 'asd'
-        })
-            .then(response => response.json())
-            .then(json => console.log(json));
-        */
-        axios.get('https://jsonplaceholder.typicode.com/posts?userId=1')
+        if (this.state.typeCasting.input.trim()===""){
+            alert("Please enter valid name");
+            return;
+        }
+        axios.get("http://localhost:8080/nameBasic/typeCasting?fullName=" + this.state.typeCasting.input)
             .then(response => {
-                console.log(response);
-                if (response.status == 200) {
+                if (response.status === 200) {
                     let currentState = {...this.state.typeCasting};
                     currentState.display = "block";
-                    currentState.data = response.data[0];
+                    currentState.data = response.data;
                     this.setState({typeCasting: currentState});
-                    //alert("result is ")
-                } else {
-                    alert("Could not find")
-                }
-            });
+                } else if (response.status === 404) {
 
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+
+    }
+
+    typecastingChangeHandler = (event) => {
+        let currentState = {...this.state.typeCasting};
+        currentState.input = event.target.value != undefined ? event.target.value : '';
+        this.setState({typeCasting: currentState});
+    }
+
+    sharedMovieOnChangeHandlerFirstName = (event) => {
+        let currentState = {...this.state.sharedMovie};
+        currentState.input = event.target.value;
+        this.setState({sharedMovie: currentState});
+    }
+    sharedMovieOnChangeHandlerSecondName = (event) => {
+        let currentState = {...this.state.sharedMovie};
+        currentState.input2 = event.target.value;
+        this.setState({sharedMovie: currentState});
     }
 
 
     sharedMovieClickHandler = () => {
-        axios.get('https://jsonplaceholder.typicode.com/posts?userId=1')
+        if (this.state.sharedMovie.input.trim()===""|| this.state.sharedMovie.input2.trim()===""){
+            console.log(this.state.sharedMovie.input.trim());
+            console.log(this.state.sharedMovie.input2.trim());
+            alert("Please enter valid names");
+            return;
+        }
+        const params= {
+            firstName:this.state.sharedMovie.input,
+            secondName:this.state.sharedMovie.input2
+        }
+        axios.get("http://localhost:8080/nameBasic/coincidence?firstName="+params.firstName+"&secondName="+params.secondName)
             .then(response => {
                 let currentState = {...this.state.sharedMovie};
                 currentState.display = "block";
-                currentState.data = response.data[0].id;
+                currentState.data = response.data;
                 this.setState({sharedMovie: currentState});
+            })
+            .catch(error=>{
+                console.log(error);
+                console.log(error.message)
             })
     }
 
@@ -92,11 +124,16 @@ class App extends Component {
                 <Typecasting
                     clicked={this.typecastingClickHandler}
                     showTypecasting={this.state.typeCasting.display}
-                    data={this.state.typeCasting.data}/>
+                    data={this.state.typeCasting.data}
+                    changed={this.typecastingChangeHandler.bind(this)}
+                />
                 <SharedMovie
                     clicked={this.sharedMovieClickHandler}
                     showSharedMovies={this.state.sharedMovie.display}
-                    data={this.state.sharedMovie.data}/>
+                    data={this.state.sharedMovie.data}
+                    changedFirstName={this.sharedMovieOnChangeHandlerFirstName.bind(this)}
+                    changedSecondName={this.sharedMovieOnChangeHandlerSecondName.bind(this)}
+                />
                 <SixDegreesOfKevin
                     clicked={this.kevinClickHandler}
                     showKevin={this.state.sixDegreesOfKevin.display}

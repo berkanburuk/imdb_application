@@ -16,7 +16,7 @@ const typecasting = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" />
+                        <input type="text" onChange={props.changed} />
                     </td>
                 </tr>
                 <tr>
@@ -26,7 +26,7 @@ const typecasting = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <p style={{display: props.showTypecasting}}>The result is: {props.data.id}</p>
+                        <p style={{display: props.showTypecasting}}>The result is: {props.data}</p>
                     </td>
                 </tr>
                 </tbody>

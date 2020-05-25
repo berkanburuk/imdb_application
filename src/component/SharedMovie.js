@@ -17,7 +17,7 @@ const sharedMovie = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <input type="text"></input>
+                        <input type="text" onChange={props.changedFirstName}></input>
                     </td>
                 </tr>
                 <tr>
@@ -27,7 +27,7 @@ const sharedMovie = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <input type="text"></input>
+                        <input type="text" onChange={props.changedSecondName}></input>
                     </td>
                 </tr>
                 <tr>
@@ -37,7 +37,7 @@ const sharedMovie = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <p style={{display: props.showSharedMovies}}>The result is: {props.data.id}</p>
+                        <p style={{display: props.showSharedMovies}}>The result is: {props.data}</p>
                     </td>
                 </tr>
                 </tbody>
